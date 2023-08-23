@@ -1,6 +1,4 @@
-// const jsdom = require("jsdom");
-// const {JSDOM} = jsdom
-import {JSDOM} from 'jsdom'
+const {JSDOM} = require("jsdom");
 
 export interface Player {
   face: HTMLImageElement;
@@ -16,9 +14,13 @@ export async function getData(url: string) {
   const getPlayerListFromPage = async (n: number) => {
     const page = `${url}?p=${n}`
     const res = await fetch(page, { next: { revalidate: 3600 } })
+
+    if (!res.ok) throw new Error(`Failed to fetch page ${n+1}`)
+
     const txt = await res.text()
     const dom = new JSDOM(txt)
     const list = dom.window.document.getElementsByClassName("PlayerNewsModuleList-item")
+    
     const items = [...list].forEach(item => {
       const face = item.querySelector(".PlayerNewsPost img")
       const logo = item.querySelector(".PlayerNewsPost-team-logo img")
