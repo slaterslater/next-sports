@@ -1,4 +1,6 @@
-const { JSDOM } = require("jsdom");
+// const jsdom = require("jsdom");
+// const {JSDOM} = jsdom
+import {JSDOM} from 'jsdom'
 
 export interface Player {
   face: HTMLImageElement;
