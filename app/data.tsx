@@ -13,7 +13,8 @@ export async function getData(url: string) {
 
   const getPlayerListFromPage = async (n: number) => {
     const page = `${url}?p=${n}`
-    const res = await fetch(page, { next: { revalidate: 3600 } })
+    // const res = await fetch(page, { next: { revalidate: 3600 } })
+    const res = await fetch(page)
 
     if (!res.ok) throw new Error(`Failed to fetch page ${n+1}`)
 
@@ -45,7 +46,7 @@ export async function getData(url: string) {
   // each page has 10 items
   await Promise.all([
     getPlayerListFromPage(1),
-    getPlayerListFromPage(2)
+    // getPlayerListFromPage(2)
   ])
   
   // await getPlayerListFromPage(1)

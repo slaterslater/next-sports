@@ -1,3 +1,4 @@
+
 import PlayerNews from "../PlayerNews"
 import { getData } from "../data"
 
