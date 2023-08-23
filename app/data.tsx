@@ -44,13 +44,13 @@ export async function getData(url: string) {
   const players : Player[] = [];
 
   // each page has 10 items
-  await Promise.all([
-    getPlayerListFromPage(1),
+  // await Promise.all([
+    // getPlayerListFromPage(1),
     // getPlayerListFromPage(2)
-  ])
+  // ])
   
-  // await getPlayerListFromPage(1)
-  // await getPlayerListFromPage(2)
+  await getPlayerListFromPage(1)
+  await getPlayerListFromPage(2)
 
   return players
 }
