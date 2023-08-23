@@ -1,20 +1,20 @@
 const {JSDOM} = require("jsdom");
 
-export interface Player {
-  face: HTMLImageElement;
-  logo: HTMLImageElement;
+export interface Story {
+  playerImg: string;
+  teamLogo: string
   headline: string;
   analysis: string;
-  name: string;
-  team: string;
+  playerName: string;
+  playerInfo: string;
 }
 
 export async function getData(url: string) {
 
-  const getPlayerListFromPage = async (n: number) => {
+  const getStoriesFromPage = async (n: number) => {
     const page = `${url}?p=${n}`
-    // const res = await fetch(page, { next: { revalidate: 3600 } })
-    const res = await fetch(page)
+    const res = await fetch(page, { next: { revalidate: 60 } })
+    // const res = await fetch(page)
 
     if (!res.ok) throw new Error(`Failed to fetch page ${n+1}`)
 
@@ -23,34 +23,29 @@ export async function getData(url: string) {
     const list = dom.window.document.getElementsByClassName("PlayerNewsModuleList-item")
     
     const items = [...list].forEach(item => {
-      const face = item.querySelector(".PlayerNewsPost img")
-      const logo = item.querySelector(".PlayerNewsPost-team-logo img")
+      const playerImg = item.querySelector(".PlayerNewsPost img").src
+      const teamLogo = item.querySelector(".PlayerNewsPost-team-logo img").src
       const headline = item.querySelector(".PlayerNewsPost-headline").textContent.replace(/\s+/g, ' ').trim()
       const analysis = item.querySelector(".PlayerNewsPost-analysis")?.textContent
-      const name = item.querySelector(".PlayerNewsPost-name").textContent
-      const team = item.querySelector(".PlayerNewsPost-team").textContent.replace(/\s+/g, ' ').trim()
+      const playerName = item.querySelector(".PlayerNewsPost-name").textContent
+      const playerInfo = item.querySelector(".PlayerNewsPost-team").textContent.replace(/\s+/g, ' ').trim()
       const player = {
         headline,
         analysis,
-        face,
-        logo,
-        name,
-        team,
+        playerImg,
+        teamLogo,
+        playerName,
+        playerInfo,
       }
-      players.push(player)
+      data.push(player)
     })
   }
 
-  const players : Player[] = [];
-
-  // each page has 10 items
-  // await Promise.all([
-    // getPlayerListFromPage(1),
-    // getPlayerListFromPage(2)
-  // ])
+  const data : Story[] = [];
   
-  await getPlayerListFromPage(1)
-  await getPlayerListFromPage(2)
-
-  return players
+  // each page has 10 items 
+  await getStoriesFromPage(1)
+  await getStoriesFromPage(2)
+  
+  return data
 }
