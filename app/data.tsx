@@ -13,8 +13,8 @@ export async function getData(url: string) {
 
   const getStoriesFromPage = async (n: number) => {
     const page = `${url}?p=${n}`
-    const res = await fetch(page, { next: { revalidate: 60 } })
-    // const res = await fetch(page)
+    // const res = await fetch(page, { next: { revalidate: 60 } })
+    const res = await fetch(page)
 
     if (!res.ok) throw new Error(`Failed to fetch page ${n+1}`)
 
